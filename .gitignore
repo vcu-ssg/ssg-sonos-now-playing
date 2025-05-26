@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.env.*
+venv/
+.poetry/
+
+# Poetry lock
+backend/poetry.lock
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+
+# VS Code
+.vscode/
+
