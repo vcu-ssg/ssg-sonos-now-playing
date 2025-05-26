@@ -28,5 +28,32 @@ def now_playing():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/playlist")
+def playlist():
+    try:
+        speaker = SoCo(SONOS_IP)
+        coordinator = speaker.group.coordinator
+        queue = coordinator.get_queue()
+        current = coordinator.get_current_track_info()
+
+        items = []
+        for track in queue:
+            items.append({
+                "title": track.title or "",
+                "artist": track.creator or "",
+                "album": track.album or "",
+                "album_art": track.album_art_uri or "",
+                "uri": track.resources[0].uri if track.resources else "",
+            })
+
+        return jsonify({
+            "current_uri": current.get("uri"),
+            "items": items
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
