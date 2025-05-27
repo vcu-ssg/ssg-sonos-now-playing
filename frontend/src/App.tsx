@@ -70,43 +70,63 @@ function App() {
       style={{
         display: 'flex',
         flexDirection: isLandscape ? 'row' : 'column',
-        height: '100vh',
-        width: '100vw',
+        height: '100%',
+        width: '100%',
         fontFamily: 'sans-serif',
         background: '#111',
         color: '#eee',
+        overflow: 'hidden',
       }}
     >
       {/* Now Playing Panel */}
       <div
         style={{
           flex: 1,
+          minWidth: 0, // ✅ prevents content from breaking 50% width
+          minHeight: 0,
+          flexBasis: isLandscape ? '50%' : '33.33%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '2rem',
+          padding: isLandscape ? '6rem 4rem' : '2rem 2rem',
+          gap: '1.25rem',
+          overflow: 'hidden',
         }}
       >
-        <img
-          src={track.album_art}
-          alt="Album Art"
-          style={{
-            width: '300px',
-            maxWidth: '80%',
-            borderRadius: '1rem',
-            marginBottom: '1rem',
-            boxShadow: '0 0 30px #000',
-          }}
-        />
-        <h1>{track.title}</h1>
-        <h2>{track.artist}</h2>
-        <p>
-          <em>{track.album}</em>
-        </p>
+        {/* Album Art Container */}
         <div
           style={{
-            marginTop: '1rem',
+            flex: isLandscape ? 1 : undefined,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: isLandscape ? '100%' : '60%',
+          }}
+        >
+          <img
+            src={track.album_art}
+            alt="Album Art"
+            style={{
+              maxWidth: isLandscape ? '80%' : '60%',
+              maxHeight: '100%',
+              objectFit: 'contain',
+              borderRadius: '1rem',
+              boxShadow: '0 0 30px #000',
+            }}
+          />
+        </div>
+
+        <h1 style={{ fontSize: '2rem', margin: 0 }}>{track.title}</h1>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 500, margin: 0 }}>{track.artist}</h2>
+        <p style={{ fontSize: '1rem', color: '#ccc', margin: '0.5rem 0' }}>
+          <em>{track.album}{track.year ? ` (${track.year})` : ''}</em>
+        </p>
+
+        <div
+          style={{
+            marginTop: '0.5rem',
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
@@ -129,9 +149,11 @@ function App() {
       <div
         style={{
           flex: 1,
+          minWidth: 0, // ✅ same enforcement here
+          minHeight: 0,
+          flexBasis: isLandscape ? '50%' : '66.66%',
           overflowY: 'auto',
           padding: '2rem 1rem',
-          maxHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -144,36 +166,64 @@ function App() {
             listStyle: 'none',
             padding: 0,
             margin: '1rem 0',
-            maxHeight: '80vh',
+            maxHeight: '100%',
             overflowY: 'auto',
             width: '100%',
           }}
         >
-          {playlist.map((item, index) => {
-            const isCurrent = item.uri === currentUri;
-            return (
-              <li
-                key={index}
-                className={isCurrent ? 'current' : ''}
+
+        {playlist.map((item, index) => {
+          const isCurrent = item.uri === currentUri;
+          return (
+            <li
+              key={index}
+              className={isCurrent ? 'current' : ''}
+              style={{
+                width: '100%',
+                boxSizing: 'border-box',
+                padding: '1rem 1.5rem',
+                background: isCurrent ? '#333' : 'transparent',
+                borderLeft: isCurrent ? '4px solid lime' : '4px solid transparent',
+                marginBottom: '0.5rem',
+                borderRadius: '0.25rem',
+                fontWeight: isCurrent ? 'bold' : 'normal',
+              }}
+            >
+              <div
                 style={{
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  padding: '0.5rem 1rem',
-                  background: isCurrent ? '#333' : 'transparent',
-                  borderLeft: isCurrent ? '4px solid lime' : '4px solid transparent',
-                  marginBottom: '0.25rem',
-                  borderRadius: '0.25rem',
-                  fontWeight: isCurrent ? 'bold' : 'normal',
+                  fontSize: isCurrent ? '2.2rem' : '1.76rem',
+                  wordWrap: 'break-word',
+                  whiteSpace: 'normal',
                 }}
               >
-                <div>{item.title}</div>
-                <div style={{ fontSize: '0.9rem', color: '#aaa' }}>{item.artist}</div>
-                <div style={{ fontSize: '0.8rem', fontStyle: 'italic', color: '#777' }}>
-                  {item.album}
-                </div>
-              </li>
-            );
-          })}
+                {item.title}
+              </div>
+              <div
+                style={{
+                  fontSize: isCurrent ? '2rem' : '1.6rem',
+                  fontWeight: 500,
+                  color: '#ccc',
+                  wordWrap: 'break-word',
+                  whiteSpace: 'normal',
+                }}
+              >
+                {item.artist}
+              </div>
+              <div
+                style={{
+                  fontSize: isCurrent ? '1.9rem' : '1.52rem',
+                  fontStyle: 'italic',
+                  color: '#888',
+                  wordWrap: 'break-word',
+                  whiteSpace: 'normal',
+                }}
+              >
+                {item.album}
+              </div>
+            </li>
+          );
+        })}
+
         </ul>
       </div>
 
@@ -187,6 +237,8 @@ function App() {
             width: 100%;
             overflow: hidden;
             background-color: #111;
+            display: flex;
+            flex-direction: column;
           }
 
           @keyframes pulse {
@@ -198,6 +250,8 @@ function App() {
       </style>
     </div>
   );
+
+
 }
 
 export default App;
