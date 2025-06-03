@@ -120,9 +120,6 @@ function App() {
 
         <h1 style={{ fontSize: '2rem', margin: 0 }}>{track.title}</h1>
         <h2 style={{ fontSize: '1.5rem', fontWeight: 500, margin: 0 }}>{track.artist}</h2>
-        <p style={{ fontSize: '1rem', color: '#ccc', margin: '0.5rem 0' }}>
-          <em>{track.album}{track.year ? ` (${track.year})` : ''}</em>
-        </p>
 
         <div
           style={{

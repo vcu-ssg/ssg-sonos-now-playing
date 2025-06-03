@@ -8,6 +8,10 @@ SONOS_IP = os.environ.get("SONOS_IP", "192.168.1.155")
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/")
+def hello():
+    return "Hello, world!"
+
 @app.route("/now-playing")
 def now_playing():
     try:

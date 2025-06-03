@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/now-playing': 'http://localhost:5000',
-      '/playlist': 'http://localhost:5000',
+      '/now-playing': 'http://backend:5000',
+      '/playlist': 'http://backend:5000',
     },
   },
 })
